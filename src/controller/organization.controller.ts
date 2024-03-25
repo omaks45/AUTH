@@ -23,7 +23,7 @@ const validateSignupData = (signupData: SignupData): void => {
 };
 
 // Function to handle organization signup
-export const signup = async (req: Request, res: Response): Promise<void> => {
+export const register = async (req: Request, res: Response): Promise<void> => {
     try {
         const signupData: SignupData = req.body;
 
@@ -104,4 +104,4 @@ passport.deserializeUser(async(id, done) => {
     }
 })
 
-export default { signup };
+export default { register };
