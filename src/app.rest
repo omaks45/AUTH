@@ -1,0 +1,11 @@
+post http://localhost:5000/api/signup
+Content-Type: application/json
+
+{
+    "firstName": "Omaka",
+    "lastName": "Justice",
+    "email": "youngomaks@gmail.com",
+    "phoneNumber": "07134789032",
+    "password": "EcuadorAmerica",
+    "confirmPassword": "EcuadorAmerica"
+}

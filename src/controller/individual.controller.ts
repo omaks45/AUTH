@@ -3,17 +3,23 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Request, Response } from 'express';
 import Individual, { UserDocument } from '../models/individual.model';
 import { hashPassword } from '../utils/password.utils';
+import { validationResult } from 'express-validator';
 
 // Function to handle signup
+
+
+
 export const signup = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Extract individual input from the request body
-        const { firstName, lastName, email, phoneNumber, password, confirmPassword }: UserDocument & { confirmPassword: string } = req.body;
-
         // Validate input data
-        if (password !== confirmPassword) {
-            throw new Error('Passwords do not match');
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() });
+            return;
         }
+
+        // Extract individual input from the request body
+        const { firstName, lastName, email, phoneNumber, password }: UserDocument = req.body;
 
         // Hash the password
         const hashedPassword = await hashPassword(password);
@@ -35,10 +41,9 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     } catch (error: any) {
         // Handle errors
         console.error('Error during signup:', error);
-        res.status(400).json({ error: error.message });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
-
 
 
 //use the google strategy with passport
